@@ -1,5 +1,6 @@
 package com.rm.retty.api.controller;
 
+import com.rm.retty.api.controller.request.TransferRequest;
 import com.rm.retty.api.controller.request.UserRequest;
 import com.rm.retty.api.service.MoneyService;
 import com.rm.retty.api.service.TransferResult;
@@ -24,12 +25,14 @@ public class MoneyControllerTest {
         MoneyController moneyController = new MoneyController(moneyService);
         UserRequest fromUserRequest = new UserRequest("Yoda", "AccountIsYodaNumber123");
         UserRequest toUserRequest = new UserRequest("Luke", "theforce123");
+        TransferRequest transferRequest = new TransferRequest(fromUserRequest, toUserRequest, BigDecimal.valueOf(500));
+
         Response expectedResponse = new Response("Success", 200);
 
         //when
         when(moneyService.transfer(any(), any())).thenReturn(new TransferResult("Success"));
 
-        Response actualResponse = moneyController.transfer(fromUserRequest, toUserRequest, BigDecimal.valueOf(1000));
+        Response actualResponse = moneyController.transfer(transferRequest);
 
         //then
         assertEquals(expectedResponse, actualResponse);
