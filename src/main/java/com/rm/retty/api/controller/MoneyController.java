@@ -1,12 +1,11 @@
 package com.rm.retty.api.controller;
 
-import com.rm.retty.api.controller.request.TransferRequest;
 import com.rm.retty.api.service.MoneyService;
-import com.rm.retty.container.Response;
-import com.rm.retty.container.annotations.Json;
-import com.rm.retty.container.annotations.Method;
-import com.rm.retty.container.annotations.MethodType;
-import com.rm.retty.container.annotations.Rest;
+import com.rm.retty.server.Request;
+import com.rm.retty.server.Response;
+import com.rm.retty.server.annotations.Method;
+import com.rm.retty.server.annotations.MethodType;
+import com.rm.retty.server.annotations.Rest;
 
 @Rest("/money")
 public class MoneyController {
@@ -22,7 +21,7 @@ public class MoneyController {
     }
 
     @Method(methodType = MethodType.POST, path = "/transfer")
-    public Response transfer(@Json TransferRequest transferRequest) {
-        return new Response("Success", 200);
+    public Response transfer(Request request) {
+        return new Response("Success");
     }
 }

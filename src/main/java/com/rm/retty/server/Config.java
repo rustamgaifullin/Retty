@@ -1,4 +1,4 @@
-package com.rm.retty.container;
+package com.rm.retty.server;
 
 public class Config {
     private final String host;

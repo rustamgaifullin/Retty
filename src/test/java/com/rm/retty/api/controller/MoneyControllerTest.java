@@ -4,7 +4,8 @@ import com.rm.retty.api.controller.request.TransferRequest;
 import com.rm.retty.api.controller.request.UserRequest;
 import com.rm.retty.api.service.MoneyService;
 import com.rm.retty.api.service.TransferResult;
-import com.rm.retty.container.Response;
+import com.rm.retty.server.Request;
+import com.rm.retty.server.Response;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -27,12 +28,12 @@ public class MoneyControllerTest {
         UserRequest toUserRequest = new UserRequest("Luke", "theforce123");
         TransferRequest transferRequest = new TransferRequest(fromUserRequest, toUserRequest, BigDecimal.valueOf(500));
 
-        Response expectedResponse = new Response("Success", 200);
+        Response expectedResponse = new Response("Success");
 
         //when
         when(moneyService.transfer(any(), any())).thenReturn(new TransferResult("Success"));
 
-        Response actualResponse = moneyController.transfer(transferRequest);
+        Response actualResponse = moneyController.transfer(new Request(transferRequest.toString()));
 
         //then
         assertEquals(expectedResponse, actualResponse);

@@ -1,4 +1,4 @@
-package com.rm.retty.container.annotations;
+package com.rm.retty.server.annotations;
 
 import java.lang.annotation.*;
 
