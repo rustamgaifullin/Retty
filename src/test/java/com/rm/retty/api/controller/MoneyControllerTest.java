@@ -31,7 +31,7 @@ public class MoneyControllerTest {
         Response expectedResponse = new Response("Success");
 
         //when
-        when(moneyService.transfer(any(), any())).thenReturn(new TransferResult("Success"));
+        when(moneyService.transfer(any(), any(), any())).thenReturn(new TransferResult("Success"));
 
         Response actualResponse = moneyController.transfer(new Request(transferRequest.toString()));
 

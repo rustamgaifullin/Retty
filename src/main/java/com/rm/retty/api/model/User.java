@@ -3,12 +3,17 @@ package com.rm.retty.api.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User extends Model<String>{
     private final String name;
     private final List<Account> accountList = new ArrayList<>();
 
     public User(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getKey() {
+        return name;
     }
 
     public String getName() {
@@ -49,4 +54,3 @@ public class User {
                 '}';
     }
 }
-

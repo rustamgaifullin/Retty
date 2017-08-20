@@ -7,6 +7,10 @@ public class TransferResult {
         this.result = result;
     }
 
+    public static TransferResult SUCCESS() {
+        return new TransferResult("Success");
+    }
+
     public String getResult() {
         return result;
     }

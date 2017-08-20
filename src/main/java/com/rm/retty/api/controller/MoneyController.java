@@ -1,5 +1,7 @@
 package com.rm.retty.api.controller;
 
+import com.rm.retty.api.SampleData;
+import com.rm.retty.api.repository.AccountRepository;
 import com.rm.retty.api.service.MoneyService;
 import com.rm.retty.server.Request;
 import com.rm.retty.server.Response;
@@ -13,7 +15,7 @@ public class MoneyController {
     private final MoneyService moneyService;
 
     public MoneyController() {
-        moneyService = new MoneyService();
+        moneyService = new MoneyService(new AccountRepository(SampleData.getAccountList()));
     }
 
     public MoneyController(MoneyService moneyService) {

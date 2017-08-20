@@ -2,7 +2,7 @@ package com.rm.retty.api.model;
 
 import java.math.BigDecimal;
 
-public class Account {
+public class Account extends Model<String> {
     private final User user;
     private final String number;
     private final BigDecimal balance;
@@ -11,6 +11,11 @@ public class Account {
         this.user = user;
         this.number = number;
         this.balance = balance;
+    }
+
+    @Override
+    public String getKey() {
+        return number;
     }
 
     public User getUser() {
@@ -25,6 +30,10 @@ public class Account {
         return balance;
     }
 
+    public Account accountWithNewBalance(BigDecimal balance) {
+        return new Account(this.user, this.number, balance);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -32,7 +41,7 @@ public class Account {
 
         Account account = (Account) o;
 
-        if (user != null ? !user.equals(account.user) : account.user != null) return false;
+        if (user != null ? !user.getName().equals(account.user.getName()) : account.user != null) return false;
         if (number != null ? !number.equals(account.number) : account.number != null) return false;
         return balance != null ? balance.equals(account.balance) : account.balance == null;
     }
@@ -48,7 +57,6 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "user=" + user +
                 ", number='" + number + '\'' +
                 ", balance=" + balance +
                 '}';
