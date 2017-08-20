@@ -1,9 +1,7 @@
-**Retty**
-
 [![CircleCI](https://circleci.com/gh/rustamgaifullin/Retty.svg?style=svg)](https://circleci.com/gh/rustamgaifullin/Retty)
 
 
-**Description**
+**Retty**
 
 Retty it's a demonstration of how to implement simple RESTful server without any additional libraries (almost)
 
