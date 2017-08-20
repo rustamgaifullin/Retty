@@ -1,16 +1,16 @@
 package com.rm.retty.integration.client;
 
 public class UserAccountRequest {
-    private final String userName;
+    private final String name;
     private final String accountNumber;
 
-    public UserAccountRequest(String userName, String accountNumber) {
-        this.userName = userName;
+    public UserAccountRequest(String name, String accountNumber) {
+        this.name = name;
         this.accountNumber = accountNumber;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
     public String getAccountNumber() {
@@ -24,13 +24,13 @@ public class UserAccountRequest {
 
         UserAccountRequest that = (UserAccountRequest) o;
 
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         return accountNumber != null ? accountNumber.equals(that.accountNumber) : that.accountNumber == null;
     }
 
     @Override
     public int hashCode() {
-        int result = userName != null ? userName.hashCode() : 0;
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (accountNumber != null ? accountNumber.hashCode() : 0);
         return result;
     }

@@ -42,8 +42,8 @@ public class RettyIntegrationTest {
 
     @Test
     public void should_receive_response_using_rx() {
-        UserAccountRequest from = new UserAccountRequest("Yoda", "AccountIsYodaNumber123");
-        UserAccountRequest to = new UserAccountRequest("Luke", "theforce123");
+        UserAccountRequest from = new UserAccountRequest("Yoda", "number0");
+        UserAccountRequest to = new UserAccountRequest("Luke", "number1");
         TransferRequest transferRequest = new TransferRequest(from, to, BigDecimal.valueOf(50));
 
         rxTestMoneyClient.requestTransfer(transferRequest).subscribe(testSubscriber);
@@ -55,8 +55,8 @@ public class RettyIntegrationTest {
 
     @Test
     public void should_receive_response() throws Exception {
-        UserAccountRequest from = new UserAccountRequest("Yoda", "AccountIsYodaNumber123");
-        UserAccountRequest to = new UserAccountRequest("Luke", "theforce123");
+        UserAccountRequest from = new UserAccountRequest("Yoda", "number0");
+        UserAccountRequest to = new UserAccountRequest("Luke", "number1");
         TransferRequest transferRequest = new TransferRequest(from, to, BigDecimal.valueOf(50));
 
         TestMoneyClient testMoneyClient = new TestMoneyClient("http://" + config.getHost() + ":" + config.getPort());
