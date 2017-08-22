@@ -2,6 +2,7 @@ package com.rm.retty.server;
 
 import com.rm.retty.server.context.Context;
 import com.rm.retty.server.context.ContextHolder;
+import com.rm.retty.server.context.MethodInfo;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -76,8 +77,6 @@ public class RettyApplication {
             BufferedReader in = null;
             BufferedWriter out = null;
             try {
-                socket.setKeepAlive(true);
-
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
@@ -121,13 +120,13 @@ public class RettyApplication {
         }
 
         private void respond(BufferedWriter out, String fullPath, String body) throws IOException {
-            Responder responder = contextHolder.get(fullPath);
+            Responder responder = new Responder(out);
+            MethodInfo methodInfo = contextHolder.get(fullPath);
 
-            if (responder == null) {
-                println("400 Bad request");
-                out.write(String.format(Responder.statusLine, 400, "Bad request"));
+            if (methodInfo == null) {
+                responder.methodNotAllowed();
             } else {
-                responder.respond(out, body);
+                responder.successful(methodInfo, body);
             }
         }
     }

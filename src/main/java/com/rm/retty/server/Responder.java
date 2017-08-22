@@ -1,5 +1,7 @@
 package com.rm.retty.server;
 
+import com.rm.retty.server.context.MethodInfo;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,20 +10,19 @@ import static com.rm.retty.server.utils.Logger.print;
 import static com.rm.retty.server.utils.Logger.println;
 
 public class Responder {
-    public static final String statusLine = "HTTP/1.1 %d %s\r\n";
+    private static final String statusLine = "HTTP/1.1 %d %s\r\n";
 
-    private final Class claszz;
-    private final Method method;
-    private final Object object;
+    private final BufferedWriter out;
 
-    public Responder(Class claszz, Method method, Object object) {
-        this.claszz = claszz;
-        this.method = method;
-        this.object = object;
+    public Responder(BufferedWriter out) {
+        this.out = out;
     }
 
-    public void respond(BufferedWriter out, String body) throws IOException {
+    public void successful(MethodInfo methodInfo, String body) throws IOException {
         try {
+            Method method = methodInfo.getMethod();
+            Object object = methodInfo.getObject();
+
             Request request = new Request(body);
             Response response = (Response) method.invoke(object, request);
 
@@ -38,9 +39,18 @@ public class Responder {
             println("done writing to output stream");
 
         } catch (IllegalAccessException | InvocationTargetException e) {
-            out.write(String.format(statusLine, 500, "Internal Server Error"));
+            error(500, "Internal server error");
             e.printStackTrace();
         }
+    }
+
+    public void methodNotAllowed() throws IOException {
+        error(405, "Method not allowed");
+    }
+
+    private void error(int code, String message) throws IOException {
+        writeAndLog(out, String.format(statusLine, code, message));
+        writeAndLog(out, "\r\n");
     }
 
     private void writeAndLog(BufferedWriter out, String string) throws IOException {

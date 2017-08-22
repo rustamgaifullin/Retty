@@ -1,6 +1,5 @@
 package com.rm.retty.server.context;
 
-import com.rm.retty.server.Responder;
 import com.rm.retty.server.annotations.MethodType;
 import com.rm.retty.server.annotations.Rest;
 
@@ -13,7 +12,7 @@ import static com.rm.retty.server.utils.Logger.println;
 
 public class ContextHolder {
 
-    private HashMap<String, Responder> responderMap = new HashMap<>();
+    private HashMap<String, MethodInfo> responderMap = new HashMap<>();
 
     private final Context context;
 
@@ -40,9 +39,9 @@ public class ContextHolder {
                         Method getPath = methodAnnotation.annotationType().getDeclaredMethod("path");
                         String methodPath = (String) getPath.invoke(methodAnnotation);
 
-                        Responder responder = new Responder(clazz, method, newObject);
+                        MethodInfo methodInfo = new MethodInfo(method, newObject);
                         String fullPath = String.format("%s %s%s HTTP/1.1", methodType.name(), controllerPath, methodPath);
-                        responderMap.put(fullPath, responder);
+                        responderMap.put(fullPath, methodInfo);
                     }
                 }
 
@@ -56,7 +55,7 @@ public class ContextHolder {
         println("Context initialized\n");
     }
 
-    public Responder get(String path) {
+    public MethodInfo get(String path) {
         return responderMap.get(path);
     }
 }
