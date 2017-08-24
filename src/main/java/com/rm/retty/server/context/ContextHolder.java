@@ -40,7 +40,7 @@ public class ContextHolder {
                         String methodPath = (String) getPath.invoke(methodAnnotation);
 
                         MethodInfo methodInfo = new MethodInfo(method, newObject);
-                        String fullPath = String.format("%s %s%s HTTP/1.1", methodType.name(), controllerPath, methodPath);
+                        String fullPath = String.format("%s %s%s", methodType.name(), controllerPath, methodPath);
                         responderMap.put(fullPath, methodInfo);
                     }
                 }
