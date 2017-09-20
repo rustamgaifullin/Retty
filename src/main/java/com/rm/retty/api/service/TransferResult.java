@@ -3,12 +3,20 @@ package com.rm.retty.api.service;
 public class TransferResult {
     private final String result;
 
-    public TransferResult(String result) {
+    private TransferResult(String result) {
         this.result = result;
     }
 
     public static TransferResult SUCCESS() {
         return new TransferResult("Success");
+    }
+
+    public static TransferResult ZERO_BALANCE() {
+        return new TransferResult("Zero balance on account");
+    }
+
+    public static TransferResult NOT_ENOUGH_MONEY() {
+        return new TransferResult("Not enough money");
     }
 
     public String getResult() {
