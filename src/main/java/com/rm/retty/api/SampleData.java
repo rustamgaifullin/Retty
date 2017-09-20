@@ -24,7 +24,7 @@ public class SampleData {
     private static void initAccounts() {
         for (int i = 0; i < userList.size(); i++) {
             User user = userList.get(i);
-            Account account = new Account(user, String.format("number%d", i), BigDecimal.valueOf(1000 * i));
+            Account account = new Account(user, String.format("number%d", i), BigDecimal.valueOf(1000));
             accountList.add(account);
             user.addAccount(account);
         }

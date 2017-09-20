@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
+import static com.rm.retty.api.service.TransferResult.SUCCESS;
 import static java.math.BigDecimal.ZERO;
 import static java.util.Optional.of;
 import static org.junit.Assert.assertEquals;
@@ -43,7 +44,7 @@ public class MoneyControllerTest {
 
         //when
         when(userService.getAccount(anyString(), anyString())).thenReturn(account);
-        when(moneyService.transfer(any(), any(), any())).thenReturn(new TransferResult("Success"));
+        when(moneyService.transfer(any(), any(), any())).thenReturn(SUCCESS());
 
         Response actualResponse = moneyController.transfer(new Request(transferRequest.toString()));
 
@@ -59,7 +60,7 @@ public class MoneyControllerTest {
 
         //when
         when(userService.getAccount(anyString(), anyString())).thenReturn(account);
-        when(moneyService.transfer(any(), any(), any())).thenReturn(new TransferResult("Success"));
+        when(moneyService.transfer(any(), any(), any())).thenReturn(SUCCESS());
 
         Response actualResponse = moneyController.transfer(new Request(transferRequest.toString()));
 
