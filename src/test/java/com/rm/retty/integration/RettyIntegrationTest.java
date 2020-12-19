@@ -1,6 +1,7 @@
 package com.rm.retty.integration;
 
 import com.rm.retty.api.controller.MoneyController;
+import com.rm.retty.api.controller.UserController;
 import com.rm.retty.server.Config;
 import com.rm.retty.server.context.Context;
 import com.rm.retty.server.RettyApplication;
@@ -23,9 +24,11 @@ public class RettyIntegrationTest {
 
     private Config config = new Config("127.0.0.1", 8080);
     private Context context = new Context()
-            .addClass(MoneyController.class);
+            .addClass(MoneyController.class)
+            .addClass(UserController.class);
     private RettyApplication rettyApplication = new RettyApplication(config, context);
-    private RxTestMoneyClient rxTestMoneyClient = new RxTestMoneyClient("http://" + config.getHost() + ":" + config.getPort());
+    private RxTestMoneyClient rxTestMoneyClient = new RxTestMoneyClient(config.getFullUrl());
+    private TestMoneyClient testMoneyClient = new TestMoneyClient(config.getFullUrl());
 
     private TestSubscriber<ResponseBody> testSubscriber = new TestSubscriber<>();
 
@@ -59,11 +62,22 @@ public class RettyIntegrationTest {
         UserAccountRequest to = new UserAccountRequest("Luke", "number1");
         TransferRequest transferRequest = new TransferRequest(from, to, BigDecimal.valueOf(50));
 
-        TestMoneyClient testMoneyClient = new TestMoneyClient("http://" + config.getHost() + ":" + config.getPort());
-
         ResponseBody responseBody = testMoneyClient.requestTransfer(transferRequest).execute().body();
         String result = responseBody.string();
 
         assertEquals("Success", result);
+    }
+
+    @Test
+    public void should_receive_user_response() throws Exception {
+        //given
+        String userName = "Yoda";
+        String accountNumber = "number0";
+
+        rxTestMoneyClient.getUserBalance(userName, accountNumber).subscribe(testSubscriber);
+
+        testSubscriber.assertComplete();
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertValue(responseBody -> responseBody.string().equals("1000.00"));
     }
 }

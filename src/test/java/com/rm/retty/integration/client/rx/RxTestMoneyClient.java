@@ -23,4 +23,8 @@ public class RxTestMoneyClient {
     public Flowable<ResponseBody> requestTransfer(TransferRequest transferRequest) {
         return moneyApiRx.transfer(transferRequest);
     }
+
+    public Flowable<ResponseBody> getUserBalance(String userName, String accountNumber) {
+        return moneyApiRx.getUserBalance(userName, accountNumber);
+    }
 }

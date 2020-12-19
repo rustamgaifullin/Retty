@@ -17,6 +17,10 @@ public class Config {
         return port;
     }
 
+    public String getFullUrl() {
+        return String.format("http://%s:%d", host, port);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -2,6 +2,7 @@ package com.rm.retty.server;
 
 import com.rm.retty.server.context.Context;
 import com.rm.retty.server.context.ContextHolder;
+import com.rm.retty.server.context.MethodInfo;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -12,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.rm.retty.server.Header.header;
+import static com.rm.retty.server.MethodPath.methodPathFromStringRequest;
 import static com.rm.retty.server.utils.Closer.close;
 import static com.rm.retty.server.utils.Closer.flush;
 import static com.rm.retty.server.utils.Logger.println;
@@ -76,18 +78,16 @@ public class RettyApplication {
             BufferedReader in = null;
             BufferedWriter out = null;
             try {
-                socket.setKeepAlive(true);
-
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
                 Boolean isFirstLine = true;
                 String line;
-                String fullPath = "";
+                MethodPath methodPath = null;
                 while ((line = in.readLine()) != null) {
                     println(line);
                     if (isFirstLine) {
-                        fullPath = line;
+                        methodPath = methodPathFromStringRequest(line);
                         isFirstLine = false;
                         continue;
                     }
@@ -101,7 +101,7 @@ public class RettyApplication {
 
                 String body = readBody(in);
 
-                respond(out, fullPath, body);
+                respond(out, methodPath, body);
                 println("Everything closed");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -120,14 +120,14 @@ public class RettyApplication {
             return new String(content);
         }
 
-        private void respond(BufferedWriter out, String fullPath, String body) throws IOException {
-            Responder responder = contextHolder.get(fullPath);
+        private void respond(BufferedWriter out, MethodPath methodPath, String body) throws IOException {
+            Responder responder = new Responder(out);
+            MethodInfo methodInfo = contextHolder.get(methodPath.getTypedPath());
 
-            if (responder == null) {
-                println("400 Bad request");
-                out.write(String.format(Responder.statusLine, 400, "Bad request"));
+            if (methodInfo == null) {
+                responder.methodNotAllowed();
             } else {
-                responder.respond(out, body);
+                responder.successful(methodInfo, body);
             }
         }
     }
